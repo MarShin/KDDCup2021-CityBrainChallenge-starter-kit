@@ -70,6 +70,9 @@ class TestAgent:
         # info is returned 'info' of env.step()
         observations = obs["observations"]
         info = obs["info"]
+
+        print("Observations: ", observations)
+
         actions = {}
 
         # a simple fixtime agent

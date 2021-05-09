@@ -6,8 +6,10 @@ As an example, this file offers a standard implementation.
 
 import pickle
 import os
+
 path = os.path.split(os.path.realpath(__file__))[0]
 import sys
+
 sys.path.append(path)
 import random
 
@@ -32,7 +34,7 @@ from keras.models import Model
 # contains all of the intersections
 
 
-class TestAgent():
+class TestAgent:
     def __init__(self):
 
         # DQN parameters
@@ -68,15 +70,14 @@ class TestAgent():
         self.target_model = self._build_model()
         self.update_target_network()
 
-
-
     ################################
     # don't modify this function.
     # agent_list is a list of agent_id
-    def load_agent_list(self,agent_list):
+    def load_agent_list(self, agent_list):
         self.agent_list = agent_list
-        self.now_phase = dict.fromkeys(self.agent_list,1)
-        self.last_change_step = dict.fromkeys(self.agent_list,0)
+        self.now_phase = dict.fromkeys(self.agent_list, 1)
+        self.last_change_step = dict.fromkeys(self.agent_list, 0)
+
     # intersections[key_id] = {
     #     'have_signal': bool,
     #     'end_roads': list of road_id. Roads that end at this intersection. The order is random.
@@ -94,10 +95,11 @@ class TestAgent():
     #               lane_id is road_id*100 + 0/1/2... For example, if road 9 have 3 lanes, then their id are 900, 901, 902
     # }
     # agents[agent_id] = list of length 8. contains the inroad0_id, inroad1_id, inroad2_id,inroad3_id, outroad0_id, outroad1_id, outroad2_id, outroad3_id
-    def load_roadnet(self,intersections, roads, agents):
+    def load_roadnet(self, intersections, roads, agents):
         self.intersections = intersections
         self.roads = roads
         self.agents = agents
+
     ################################
 
     def act_(self, observations_for_agent):
@@ -106,28 +108,32 @@ class TestAgent():
 
         actions = {}
         for agent_id in self.agent_list:
-            action = self.get_action(observations_for_agent[agent_id]['lane'])
+            action = self.get_action(observations_for_agent[agent_id]["lane"])
             actions[agent_id] = action
         return actions
 
     def act(self, obs):
-        observations = obs['observations']
-        info = obs['info']
+        observations = obs["observations"]
+        info = obs["info"]
         actions = {}
 
         # Get state
         observations_for_agent = {}
-        for key,val in observations.items():
-            observations_agent_id = int(key.split('_')[0])
-            observations_feature = key[key.find('_')+1:]
-            if(observations_agent_id not in observations_for_agent.keys()):
+        for key, val in observations.items():
+            observations_agent_id = int(key.split("_")[0])
+            observations_feature = key[key.find("_") + 1 :]
+            if observations_agent_id not in observations_for_agent.keys():
                 observations_for_agent[observations_agent_id] = {}
-            observations_for_agent[observations_agent_id][observations_feature] = val[1:]
+            observations_for_agent[observations_agent_id][observations_feature] = val[
+                1:
+            ]
 
         # Get actions
         for agent in self.agent_list:
             self.epsilon = 0
-            actions[agent] = self.get_action(observations_for_agent[agent]['lane_vehicle_num']) + 1
+            actions[agent] = (
+                self.get_action(observations_for_agent[agent]["lane_vehicle_num"]) + 1
+            )
 
         return actions
 
@@ -150,15 +156,12 @@ class TestAgent():
     def _build_model(self):
 
         # Neural Net for Deep-Q learning Model
-        
+
         model = Sequential()
-        model.add(Dense(20, input_dim=self.ob_length, activation='relu'))
+        model.add(Dense(20, input_dim=self.ob_length, activation="relu"))
         # model.add(Dense(20, activation='relu'))
-        model.add(Dense(self.action_space, activation='linear'))
-        model.compile(
-            loss='mse',
-            optimizer=RMSprop()
-        )
+        model.add(Dense(self.action_space, activation="linear"))
+        model.compile(loss="mse", optimizer=RMSprop())
         return model
 
     def _reshape_ob(self, ob):
@@ -179,7 +182,9 @@ class TestAgent():
         else:
             minibatch = random.sample(self.memory, self.batch_size)
         obs, actions, rewards, next_obs, = [np.stack(x) for x in np.array(minibatch).T]
-        target = rewards + self.gamma * np.amax(self.target_model.predict([next_obs]), axis=1)
+        target = rewards + self.gamma * np.amax(
+            self.target_model.predict([next_obs]), axis=1
+        )
         target_f = self.model.predict([obs])
         for i, action in enumerate(actions):
             target_f[i][action] = target[i]
@@ -198,9 +203,8 @@ class TestAgent():
         model_name = os.path.join(dir, name)
         self.model.save_weights(model_name)
 
-scenario_dirs = [
-    "test"
-]
+
+scenario_dirs = ["test"]
 
 agent_specs = dict.fromkeys(scenario_dirs, None)
 for i, k in enumerate(scenario_dirs):

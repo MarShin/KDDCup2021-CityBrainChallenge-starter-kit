@@ -17,3 +17,6 @@ ui/src/log/*.json
 out/*/*.json
 model/*.h5
 .DS_Store
+
+# submission
+*.zip

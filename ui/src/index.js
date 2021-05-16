@@ -3,8 +3,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Button, Input } from 'antd';
 
-mapboxgl.accessToken =
-  Your_token;
+mapboxgl.accessToken = ''
 class Application extends React.Component {
   mapRef = React.createRef();
   map;
@@ -12,7 +11,7 @@ class Application extends React.Component {
     super(props);
     this.state = { clocker: 0, paused: true, code: '' };
 
-    this.maxTime = 360;
+    this.maxTime = 219;
     this.trafficpos = require('./log/lightinfo.json');
     this.roadpos = require('./log/roadinfo.json');
     this.ClickStart = this.ClickStart.bind(this);

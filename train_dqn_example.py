@@ -1,5 +1,4 @@
 import datetime
-
 import CBEngine
 import json
 import traceback
@@ -351,6 +350,7 @@ def train(agent_spec, simulator_cfg_file, gym_cfg, metric_period):
                     observations_feature = key.split("_")[1]
                     if observations_agent_id not in observations_for_agent.keys():
                         observations_for_agent[observations_agent_id] = {}
+                    # what is this?
                     val = val[1:]
                     while len(val) < agent.ob_length:
                         val.append(0)
@@ -617,6 +617,7 @@ if __name__ == "__main__":
         "--threshold", help="period of scoring", default=1.6, type=float
     )
 
+    # DQN args
     parser.add_argument("--thread", type=int, default=8, help="number of threads")
     parser.add_argument("--steps", type=int, default=360, help="number of steps")
     parser.add_argument(

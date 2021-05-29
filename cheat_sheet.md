@@ -8,7 +8,7 @@ python3 evaluate.py --input_dir agent --output_dir out/baseline --sim_cfg cfg/si
 ```
 __train__
 ```
-python3 train_dqn_graph.py --input_dir agent-graph --sim_cfg ./cfg/simulator.cfg --output_dir out/graph --episodes 2 --save_model --save_dir agent-graph --save_rate 1 
+python3 train_dqn_graph.py --input_dir agent-graph --sim_cfg ./cfg/simulator.cfg --output_dir out/graph --episodes 100 --save_model --save_dir agent-graph --save_rate 10 
 ```
 
 /usr/local/cuda/lib:/usr/local/cuda/lib64:/usr/local/cuda/extras/CUPTI/lib64:/opt/amazon/efa/lib:/opt/amazon/openmpi/lib:/usr/local/lib:/usr/lib:/usr/lib/x86_64-linux-gnu:

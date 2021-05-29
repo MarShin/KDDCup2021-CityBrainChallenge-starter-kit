@@ -48,7 +48,7 @@ class GraphAgent():
         self.memory = deque(maxlen=2000)
         self.learning_start = 2000
         self.update_model_freq = 1
-        self.update_target_model_freq = 1
+        self.update_target_model_freq = 20
 
         self.gamma = 0.95  # discount rate
         self.epsilon = 0.1  # exploration rate

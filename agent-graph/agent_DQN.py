@@ -266,14 +266,18 @@ class TestAgent():
             minibatch = self.memory
         else:
             minibatch = random.sample(self.memory, self.batch_size)
-        obs, actions, rewards, next_obs, = [np.stack(x) for x in np.array(minibatch).T]
-        target = rewards + self.gamma * np.amax(self.target_model.predict([next_obs]), axis=1)
-        target_f = self.model.predict([obs])
+        state, actions, rewards, new_state, = [np.stack(x) for x in np.array(minibatch).T]
+
+        obs_self = state['lane']
+        obs_msg = state['neighbours']
+        new_obs_self = new_state['lane']
+        new_obs_msg = new_state['neighbours']
+
+        target = rewards + self.gamma * np.amax(self.target_model.predict([new_obs_self, new_obs_msg]), axis=1)
+        target_f = self.model.predict([obs_self, obs_msg])
         for i, action in enumerate(actions):
             target_f[i][action] = target[i]
-        print('How to pass neighbours?')
-        import IPython; IPython.embed(); exit(1)
-        self.model.fit([obs], target_f, epochs=1, verbose=0)
+        self.model.fit([obs_self, obs_msg], target_f, epochs=1, verbose=0)
         if self.epsilon > self.epsilon_min:
             self.epsilon *= self.epsilon_decay
 

@@ -429,8 +429,14 @@ def train(agent_spec, simulator_cfg_file, gym_cfg, metric_period):
 
                 # Remember (state, action, reward, next_state) into memory buffer.
                 for agent_id in agent_id_list:
-                    agent.remember(observations_for_agent[agent_id]['lane'], actions[agent_id], rewards[agent_id],
-                                   new_observations_for_agent[agent_id]['lane'])
+                    # need to build the neibghour to the state
+                    observations_for_agent = agent.build_neighbour_features(observations_for_agent, 'lane')
+                    new_observations_for_agent = agent.build_neighbour_features(new_observations_for_agent, 'lane')
+
+                    state = {'self_ob': observations_for_agent[agent_id]['lane'], 'msg_ob': observations_for_agent[agent_id]['neighbours']}
+                    new_state = {'self_ob': new_observations_for_agent[agent_id]['lane'], 'msg_ob': new_observations_for_agent[agent_id]['neighbours']}
+                    
+                    agent.remember(state, actions[agent_id], rewards[agent_id], new_state)
                     episodes_rewards[agent_id] += rewards[agent_id]
                 episodes_decision_num += 1
                 total_decision_num += 1

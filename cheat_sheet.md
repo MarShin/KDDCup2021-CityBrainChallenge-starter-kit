@@ -12,8 +12,12 @@ python3 train_dqn_graph.py --input_dir agent-graph --sim_cfg ./cfg/simulator.cfg
 
 /usr/local/cuda/lib:/usr/local/cuda/lib64:/usr/local/cuda/extras/CUPTI/lib64:/opt/amazon/efa/lib:/opt/amazon/openmpi/lib:/usr/local/lib:/usr/lib:/usr/lib/x86_64-linux-gnu:
 
+https://github.com/MarShin/KDDCup2021-CityBrainChallenge-starter-kit.git
+docker run -it -v /home/ubuntu/KDDCup2021-CityBrainChallenge-starter-kit:/starter-kit citybrainchallenge/cbengine:0.1.2 bash
 
-docker run -it -v /home/ubuntu/KDDCup2021-CityBrainChallenge-starter-kit:/starter-kit -v /usr/local/cuda:/usr/local/cuda/lib -v /usr/lib/x86_64-linux-gnu:/usr/lib/x86_64-linux-gnu -v /usr/local/cuda/lib64:/usr/local/cuda/lib64 -v /usr/local/cuda/extras/CUPTI/lib64:/usr/local/cuda/extras/CUPTI/lib64 citybrainchallenge/cbengine:0.1.2 bash 
+
+
+-v /usr/local/cuda:/usr/local/cuda/lib -v /usr/lib/x86_64-linux-gnu:/usr/lib/x86_64-linux-gnu -v /usr/local/cuda/lib64:/usr/local/cuda/lib64 -v /usr/local/cuda/extras/CUPTI/lib64:/usr/local/cuda/extras/CUPTI/lib64 citybrainchallenge/cbengine:0.1.2 bash 
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/cuda/lib:/usr/lib/x86_64-linux-gnu:/usr/lib/x86_64-linux-gnu:/usr/local/cuda/lib64:/usr/local/cuda/extras/CUPTI/lib64
 
 /usr/local/cuda/lib:/usr/local/cuda/lib64:/usr/local/cuda/extras/CUPTI/lib64:/opt/amazon/efa/lib:/opt/amazon/openmpi/lib:/usr/local/lib:/usr/lib:/usr/lib/x86_64-linux-gnu

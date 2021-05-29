@@ -1,0 +1,8 @@
+{
+  "success": true,
+  "error_msg": "",
+  "data": {
+    "total_served_vehicles": 29128,
+    "delay_index": 1.7768583842776122
+  }
+}

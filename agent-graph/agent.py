@@ -48,7 +48,7 @@ class GraphAgent():
         self.memory = deque(maxlen=2000)
         self.learning_start = 2000
         self.update_model_freq = 1
-        self.update_target_model_freq = 20
+        self.update_target_model_freq = 1
 
         self.gamma = 0.95  # discount rate
         self.epsilon = 0.1  # exploration rate
@@ -268,10 +268,10 @@ class GraphAgent():
             minibatch = random.sample(self.memory, self.batch_size)
         state, actions, rewards, new_state, = [np.stack(x) for x in np.array(minibatch).T]
 
-        obs_self = state['lane']
-        obs_msg = state['neighbours']
-        new_obs_self = new_state['lane']
-        new_obs_msg = new_state['neighbours']
+        obs_self = state['self_ob']
+        obs_msg = state['msg_ob']
+        new_obs_self = new_state['self_ob']
+        new_obs_msg = new_state['msg_ob']
 
         target = rewards + self.gamma * np.amax(self.target_model.predict([new_obs_self, new_obs_msg]), axis=1)
         target_f = self.model.predict([obs_self, obs_msg])

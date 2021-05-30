@@ -268,10 +268,10 @@ class GraphAgent():
             minibatch = random.sample(self.memory, self.batch_size)
         state, actions, rewards, new_state, = [np.stack(x) for x in np.array(minibatch).T]
 
-        obs_self = state['self_ob']
-        obs_msg = state['msg_ob']
-        new_obs_self = new_state['self_ob']
-        new_obs_msg = new_state['msg_ob']
+        obs_self = np.array([s['self_ob'] for s in state])
+        obs_msg = np.array([s['msg_ob'] for s in state])
+        new_obs_self = np.array([s['self_ob'] for s in new_state])
+        new_obs_msg = np.array([s['msg_ob'] for s in new_state])
 
         target = rewards + self.gamma * np.amax(self.target_model.predict([new_obs_self, new_obs_msg]), axis=1)
         target_f = self.model.predict([obs_self, obs_msg])

@@ -257,7 +257,10 @@ class GraphAgent():
         self.target_model.set_weights(weights)
 
     def remember(self, ob, action, reward, next_ob):
-        self.memory.append((ob, action, reward, next_ob))
+        ob_msg = self.aggregate_msg(ob['self_ob'], ob['msg_ob'])
+        next_ob_msg = self.aggregate_msg(next_ob['self_ob'], next_ob['msg_ob'])
+        self.memory.append((ob['self_ob'], ob_msg, action, 
+                            reward, next_ob['self_ob'], next_ob_msg))
 
     def replay(self):
         # Update the Q network from the memory buffer.
@@ -266,12 +269,12 @@ class GraphAgent():
             minibatch = self.memory
         else:
             minibatch = random.sample(self.memory, self.batch_size)
-        state, actions, rewards, new_state, = [np.stack(x) for x in np.array(minibatch).T]
+        obs_self, obs_msg, actions, rewards, new_obs_self, new_obs_msg= [np.stack(x) for x in np.array(minibatch).T]
 
-        obs_self = np.array([s['self_ob'] for s in state])
-        obs_msg = np.array([s['msg_ob'] for s in state])
-        new_obs_self = np.array([s['self_ob'] for s in new_state])
-        new_obs_msg = np.array([s['msg_ob'] for s in new_state])
+        # obs_self = np.array([s['self_ob'] for s in state])
+        # obs_msg = np.array([s['msg_ob'] for s in state])
+        # new_obs_self = np.array([s['self_ob'] for s in new_state])
+        # new_obs_msg = np.array([s['msg_ob'] for s in new_state])
 
         target = rewards + self.gamma * np.amax(self.target_model.predict([new_obs_self, new_obs_msg]), axis=1)
         target_f = self.model.predict([obs_self, obs_msg])

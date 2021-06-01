@@ -5,7 +5,6 @@ from pathlib import Path
 import pickle
 import gym
 
-# how to import or load local files
 import os
 import sys
 

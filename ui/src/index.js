@@ -3,7 +3,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Button, Input } from 'antd';
 
-mapboxgl.accessToken = ''
+mapboxgl.accessToken = 'pk.eyJ1IjoibWFyc2hpbjY4IiwiYSI6ImNrbzJieml3eDB0OXYyd25zb2FubTh6aDcifQ.fKzDG-FgOllTm3rw2TzY6g'
 class Application extends React.Component {
   mapRef = React.createRef();
   map;

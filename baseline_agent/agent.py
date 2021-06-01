@@ -4,32 +4,26 @@ In this file, you should implement your `AgentSpec` instance, and **must** name 
 As an example, this file offers a standard implementation.
 """
 
-import pickle
-import os
-
-path = os.path.split(os.path.realpath(__file__))[0]
 import sys
-
-sys.path.append(path)
 import random
-
-import gym
-
 from pathlib import Path
-import pickle
-import gym
+import os
+from collections import deque
+import numpy as np
 
+import gym
 import tensorflow as tf
 import keras
 from keras.models import Sequential
 from keras.layers import Dense
 from keras.optimizers import Adam, RMSprop, SGD
-import os
-from collections import deque
-import numpy as np
+
 from keras.layers.merge import concatenate
 from keras.layers import Input, Dense, Conv2D, Flatten
 from keras.models import Model
+
+path = os.path.split(os.path.realpath(__file__))[0]
+sys.path.append(path)
 
 # contains all of the intersections
 

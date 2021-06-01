@@ -335,6 +335,7 @@ def train(agent_spec, simulator_cfg_file, gym_cfg, metric_period):
         # Begins one simulation.
         i = 0
         while i < args.steps:
+            print("Step: ", i)
             if i % args.action_interval == 0:
                 if isinstance(last_obs, tuple):
                     observations = last_obs[0]
@@ -343,20 +344,28 @@ def train(agent_spec, simulator_cfg_file, gym_cfg, metric_period):
                 actions = {}
 
                 # Get the state.
+                print("observations raw")
+                print(observations)
 
                 observations_for_agent = {}
+                # features: ['lane_speed','lane_vehicle_num']
                 for key, val in observations.items():
                     observations_agent_id = int(key.split("_")[0])
-                    observations_feature = key.split("_")[1]
+                    observations_feature = key.split("_")[1]  # str 'lane' here, why?
+                    # marz: meaning only 'lane_vehicle_num' is fed to model, as shown in agent_DQN.py
+
                     if observations_agent_id not in observations_for_agent.keys():
                         observations_for_agent[observations_agent_id] = {}
-                    # what is this?
+                    # first val = current second, skip
                     val = val[1:]
                     while len(val) < agent.ob_length:
                         val.append(0)
                     observations_for_agent[observations_agent_id][
                         observations_feature
                     ] = val
+
+                print("observations_for_agent")
+                print(observations_for_agent)
 
                 # Get the action, note that we use act_() for training.
                 actions = agent.act_(observations_for_agent)
@@ -378,6 +387,7 @@ def train(agent_spec, simulator_cfg_file, gym_cfg, metric_period):
                         lane_vehicle = observations[
                             "{}_lane_vehicle_num".format(agent_id)
                         ]
+                        # pressure = outroads_lanes_ / inroads_lanes_
                         pressure = (
                             np.sum(lane_vehicle[13:25]) - np.sum(lane_vehicle[1:13])
                         ) / args.action_interval

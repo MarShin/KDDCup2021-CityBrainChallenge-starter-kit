@@ -68,7 +68,7 @@ class GraphAgent():
         # Change this to use different Model.h5
         ##############################
         ##############################
-        self.load_model(path, 99) # 1->99
+        # self.load_model(path, 99) # 1->99
         ##############################
         ##############################
 

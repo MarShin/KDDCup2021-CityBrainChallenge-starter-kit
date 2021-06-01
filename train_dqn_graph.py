@@ -435,7 +435,7 @@ def train(agent_spec, simulator_cfg_file, gym_cfg, metric_period):
 
                     state = {'self_ob': observations_for_agent[agent_id]['lane'], 'msg_ob': observations_for_agent[agent_id]['neighbours']}
                     new_state = {'self_ob': new_observations_for_agent[agent_id]['lane'], 'msg_ob': new_observations_for_agent[agent_id]['neighbours']}
-                    
+
                     agent.remember(state, actions[agent_id], rewards[agent_id], new_state)
                     episodes_rewards[agent_id] += rewards[agent_id]
                 episodes_decision_num += 1

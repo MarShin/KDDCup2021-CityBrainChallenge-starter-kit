@@ -68,7 +68,7 @@ class GraphAgent():
         # Change this to use different Model.h5
         ##############################
         ##############################
-        self.load_model(path, 1) # 1->99
+        self.load_model(path, 99) # 1->99
         ##############################
         ##############################
 
@@ -257,6 +257,10 @@ class GraphAgent():
         self.target_model.set_weights(weights)
 
     def remember(self, ob, action, reward, next_ob):
+        # prepare for PER               
+        # td_error = rewards[agent_id] + self.gamma * np.argmax(self.model.predict(next_state)[0]) - np.argmax(
+        # self.model.predict(state)[0])
+
         ob_msg = self.aggregate_msg(ob['self_ob'], ob['msg_ob'])
         next_ob_msg = self.aggregate_msg(next_ob['self_ob'], next_ob['msg_ob'])
         self.memory.append((ob['self_ob'], ob_msg, action, 

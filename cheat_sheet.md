@@ -3,7 +3,7 @@
 ### Useful commands
 __evaluate__
 ```
-python3 evaluate.py --input_dir agent-graph --output_dir out/graph --sim_cfg cfg/simulator.cfg --metric_period 200
+python3 evaluate.py --input_dir agent --output_dir out/graph-79 --sim_cfg cfg/simulator.cfg --metric_period 200
 python3 evaluate.py --input_dir agent --output_dir out/baseline --sim_cfg cfg/simulator.cfg --metric_period 200
 ```
 __train__

@@ -26,7 +26,7 @@ import os
 from collections import deque
 import numpy as np
 from keras.layers.merge import concatenate
-from keras.layers import Input, Dense, Conv2D, Flatten
+from keras.layers import Input, Dense, Dropout
 from keras.models import Model
 
 # contains all of the intersections
@@ -238,7 +238,10 @@ class GraphAgent():
         msg_dense = Dense(20, activation='relu')(msg)
 
         merge = concatenate([skip_dense, msg_dense])
-        out = Dense(self.action_space, activation='linear')(merge)
+        merge_dense = Dense(20, activation='relu')(merge)
+        merge_drop = Dropout(0.5)(merge_dense)
+
+        out = Dense(self.action_space, activation='linear')(merge_drop)
 
         model = Model(inputs=[skip, msg], outputs=out)
         

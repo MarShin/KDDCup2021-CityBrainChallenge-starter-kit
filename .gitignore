@@ -18,5 +18,32 @@ out/*/*.json
 model/*.h5
 .DS_Store
 
+**/.ipynb_checkpoints/*
+*.pyc
+__pycache__
+
+# Packages
+*.egg
+!/tests/**/*.egg
+**/*.egg-info
+**/dist/**
+build
+_build
+.cache
+*.so
+
+.vscode/
+/setup.cfg
+MANIFEST.in
+/setup.py
+
+# trashbot
+**/cache-directory/
+**/dask-worker-space/*
+**/video/
+**/archive/
+**/wandb/
+*.onnx
+*/tmp/*
 # submission
 *.zip

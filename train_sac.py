@@ -322,6 +322,7 @@ def train(agent_spec, simulator_cfg_file, gym_cfg, metric_period, config):
     agent = agent_spec[scenario[0]]
     agent.load_agent_list(agent_id_list)
     agent.load_roadnet(intersections, roads, agents)
+    agent.set_params(config)
 
     # Here begins the code for training
     total_decision_num = 0

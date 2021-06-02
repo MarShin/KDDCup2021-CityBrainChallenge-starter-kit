@@ -24,7 +24,7 @@ sys.path.append(path)
 
 
 class TestAgent:
-    def __init__(self, config):
+    def __init__(self):
 
         # SAC parameters
 
@@ -44,6 +44,15 @@ class TestAgent:
         self.act_dims = 8  # action_space
         self.ob_length = 24
 
+        self.model = self._build_model()
+
+        # Remember to uncomment the following lines when submitting, and submit your model file as well.
+        path = os.path.split(os.path.realpath(__file__))[0]
+        # self.load_model(path, 99)
+        self.target_model = self._build_model()
+        self.update_target_network()
+
+    def set_params(self, config):
         # self.act_limit = env.action_space.high[0]
         self.alpha = config["alpha"]
         self.gamma = config["gamma"]  # discount rate
@@ -53,14 +62,6 @@ class TestAgent:
         self.layer1_size = config["layer1_size"]
         self.layer2_size = config["layer2_size"]
         self.batch_size = config["batch_size"]
-
-        self.model = self._build_model()
-
-        # Remember to uncomment the following lines when submitting, and submit your model file as well.
-        path = os.path.split(os.path.realpath(__file__))[0]
-        # self.load_model(path, 99)
-        self.target_model = self._build_model()
-        self.update_target_network()
 
     ################################
     # don't modify this function.

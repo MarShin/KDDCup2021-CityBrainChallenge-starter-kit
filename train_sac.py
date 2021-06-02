@@ -488,6 +488,34 @@ def train(agent_spec, simulator_cfg_file, gym_cfg, metric_period, config):
                 )
 
 
+def get_env(
+    agent_spec, simulator_cfg_file, gym_cfg, metric_period, scores_dir, threshold
+):
+    logger.info("\n")
+    logger.info("*" * 40)
+
+    # get gym instance
+    gym_configs = gym_cfg.cfg
+    simulator_configs = read_config(simulator_cfg_file)
+    env = gym.make(
+        "CBEngine-v0",
+        simulator_cfg_file=simulator_cfg_file,
+        thread_num=1,
+        gym_dict=gym_configs,
+        metric_period=metric_period,
+    )
+    print(dir(env))
+
+    print("action space")
+    print(env.action_space)
+    print("observation space")
+    print(env.observation_space)
+
+    print("meta data")
+    print(env.metadata)
+    return env
+
+
 def run_simulation(
     agent_spec, simulator_cfg_file, gym_cfg, metric_period, scores_dir, threshold
 ):
@@ -744,6 +772,15 @@ if __name__ == "__main__":
     start_time = time.time()
     try:
         print("########### BEGIN TRAINING SAC ##############")
+        env = get_env(
+            agent_spec,
+            simulator_cfg_file,
+            gym_cfg,
+            metric_period,
+            scores_dir,
+            threshold,
+        )
+
         train(agent_spec, simulator_cfg_file, gym_cfg, metric_period, config)
         scores = run_simulation(
             agent_spec,

@@ -12,9 +12,15 @@ import random
 from pathlib import Path
 import os
 from collections import deque
-import numpy as np
+import os
+import itertools
 
-import gym
+import torch as T
+import torch.nn.functional as F
+import torch.optim as optim
+import numpy as np
+from buffer import ReplayBuffer
+from networks import ActorNetwork, CriticNetwork
 
 
 path = os.path.split(os.path.realpath(__file__))[0]
@@ -23,11 +29,10 @@ sys.path.append(path)
 # contains all of the intersections
 
 
-class TestAgent:
+class SACAgent:
     def __init__(self):
 
-        # SAC parameters
-
+        # CBEngine params
         self.now_phase = {}
         self.green_sec = 40
         self.red_sec = 5
@@ -36,25 +41,24 @@ class TestAgent:
         self.agent_list = []
         self.phase_passablelane = {}
 
-        self.memory = deque(maxlen=2000)
+        # SAC params
+        self.memory = None
         self.learning_start = 2000
         self.update_model_freq = 1
         self.update_target_model_freq = 20
 
         self.act_dims = 8  # action_space
-        self.ob_length = 24
-
-        self.model = self._build_model()
+        self.input_dims = 24  # observation space
 
         # Remember to uncomment the following lines when submitting, and submit your model file as well.
-        path = os.path.split(os.path.realpath(__file__))[0]
+        # path = os.path.split(os.path.realpath(__file__))[0]
         # self.load_model(path, 99)
-        self.target_model = self._build_model()
-        self.update_target_network()
+        # self.target_model = self._build_model()
+        # self.update_target_network()
 
     def set_params(self, config):
         # self.act_limit = env.action_space.high[0]
-        self.alpha = config["alpha"]
+        self.alpha = config["alpha"]  # ideally auto learn temperature instead of fixed
         self.gamma = config["gamma"]  # discount rate
         self.max_size = config["max_size"]
         self.tau = config["tau"]
@@ -62,6 +66,29 @@ class TestAgent:
         self.layer1_size = config["layer1_size"]
         self.layer2_size = config["layer2_size"]
         self.batch_size = config["batch_size"]
+        self.memory = ReplayBuffer(self.max_size, self.input_dims, self.act_dims)
+
+    def build_models(self):
+        self.actor = ActorNetwork(
+            lr=self.lr,
+            input_dims=self.input_dims,
+            act_dims=self.act_dims,
+            act_limit=self.act_limit,
+            name="actor",
+        )
+
+        self.critic_1 = CriticNetwork(
+            lr=lr, input_dims=input_dims, act_dims=act_dims, name="critic_1"
+        )
+        self.critic_2 = CriticNetwork(
+            lr=lr, input_dims=input_dims, act_dims=act_dims, name="critic_2"
+        )
+        self.target_critic_1 = CriticNetwork(
+            lr=lr, input_dims=input_dims, act_dims=act_dims, name="target_critic_1"
+        )
+        self.target_critic_2 = CriticNetwork(
+            lr=lr, input_dims=input_dims, act_dims=act_dims, name="target_critic_2"
+        )
 
     ################################
     # don't modify this function.
@@ -147,7 +174,7 @@ scenario_dirs = ["test"]
 agent_specs = dict.fromkeys(scenario_dirs, None)
 for i, k in enumerate(scenario_dirs):
     # initialize an AgentSpec instance with configuration
-    agent_specs[k] = TestAgent()
+    agent_specs[k] = SACAgent()
     # **important**: assign policy builder to your agent spec
     # NOTE: the policy builder must be a callable function which returns an instance of `AgentPolicy`
 

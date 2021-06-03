@@ -11,7 +11,7 @@ class ReplayBuffer:
         self.reward_memory = np.zeros(self.mem_size)
         self.terminal_memory = np.zeros(self.mem_size)
 
-    def store_transition(self, state, action, reward, state_, done):
+    def remember(self, state, action, reward, state_, done):
         index = self.mem_cntr % self.mem_size
 
         self.state_memory[index] = state

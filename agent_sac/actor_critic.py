@@ -69,7 +69,7 @@ class Agent:
             return actions.cpu().detach().numpy()[0]
 
     def remember(self, state, action, reward, new_state, done):
-        self.memory.store_transition(state, action, reward, new_state, done)
+        self.memory.remember(state, action, reward, new_state, done)
 
     def soft_update(self, source, target, tau):
         with T.no_grad():

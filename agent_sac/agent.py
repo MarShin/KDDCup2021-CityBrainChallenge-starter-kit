@@ -49,8 +49,10 @@ class SACAgent:
 
         self.act_dims = 8  # action_space
         self.input_dims = 24  # observation space
+        self.ob_length = self.input_dims # align with eval script
 
         # Remember to uncomment the following lines when submitting, and submit your model file as well.
+        # TODO: at inference time set_params() and buid_models() are replaced and set in __init__
         # path = os.path.split(os.path.realpath(__file__))[0]
         # self.load_model(path, 99)
         # self.target_model = self._build_model()
@@ -78,16 +80,28 @@ class SACAgent:
         )
 
         self.critic_1 = CriticNetwork(
-            lr=lr, input_dims=input_dims, act_dims=act_dims, name="critic_1"
+            lr=self.lr,
+            input_dims=self.input_dims,
+            act_dims=self.act_dims,
+            name="critic_1",
         )
         self.critic_2 = CriticNetwork(
-            lr=lr, input_dims=input_dims, act_dims=act_dims, name="critic_2"
+            lr=self.lr,
+            input_dims=self.input_dims,
+            act_dims=self.act_dims,
+            name="critic_2",
         )
         self.target_critic_1 = CriticNetwork(
-            lr=lr, input_dims=input_dims, act_dims=act_dims, name="target_critic_1"
+            lr=self.lr,
+            input_dims=self.input_dims,
+            act_dims=self.act_dims,
+            name="target_critic_1",
         )
         self.target_critic_2 = CriticNetwork(
-            lr=lr, input_dims=input_dims, act_dims=act_dims, name="target_critic_2"
+            lr=self.lr,
+            input_dims=self.input_dims,
+            act_dims=self.act_dims,
+            name="target_critic_2",
         )
 
     ################################

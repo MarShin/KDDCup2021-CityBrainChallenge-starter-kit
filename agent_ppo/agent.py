@@ -49,7 +49,7 @@ class PPOAgent:
 
         self.act_dims = 8  # action_space
         self.input_dims = 24  # observation space
-        self.ob_length = self.input_dims # align with eval script
+        self.ob_length = self.input_dims  # align with eval script
 
         # Remember to uncomment the following lines when submitting, and submit your model file as well.
         # TODO: at inference time set_params() and buid_models() are replaced and set in __init__
@@ -57,52 +57,6 @@ class PPOAgent:
         # self.load_model(path, 99)
         # self.target_model = self._build_model()
         # self.update_target_network()
-
-    def set_params(self, config):
-        # self.act_limit = env.action_space.high[0]
-        self.alpha = config["alpha"]  # ideally auto learn temperature instead of fixed
-        self.gamma = config["gamma"]  # discount rate
-        self.max_size = config["max_size"]
-        self.tau = config["tau"]
-        self.lr = config["lr"]
-        self.layer1_size = config["layer1_size"]
-        self.layer2_size = config["layer2_size"]
-        self.batch_size = config["batch_size"]
-        self.memory = ReplayBuffer(self.max_size, self.input_dims, self.act_dims)
-
-    def build_models(self):
-        self.actor = ActorNetwork(
-            lr=self.lr,
-            input_dims=self.input_dims,
-            act_dims=self.act_dims,
-            act_limit=self.act_limit,
-            name="actor",
-        )
-
-        self.critic_1 = CriticNetwork(
-            lr=self.lr,
-            input_dims=self.input_dims,
-            act_dims=self.act_dims,
-            name="critic_1",
-        )
-        self.critic_2 = CriticNetwork(
-            lr=self.lr,
-            input_dims=self.input_dims,
-            act_dims=self.act_dims,
-            name="critic_2",
-        )
-        self.target_critic_1 = CriticNetwork(
-            lr=self.lr,
-            input_dims=self.input_dims,
-            act_dims=self.act_dims,
-            name="target_critic_1",
-        )
-        self.target_critic_2 = CriticNetwork(
-            lr=self.lr,
-            input_dims=self.input_dims,
-            act_dims=self.act_dims,
-            name="target_critic_2",
-        )
 
     ################################
     # don't modify this function.
